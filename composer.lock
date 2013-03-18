@@ -8,12 +8,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/benjaminu/AliDatatableBundle.git",
-                "reference": "eb572245a634df85a06fc281596eb1c82ed77c0e"
+                "reference": "bc6c6564f878e7afb6b77b0609ee74a9a50cb105"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/benjaminu/AliDatatableBundle/zipball/eb572245a634df85a06fc281596eb1c82ed77c0e",
-                "reference": "eb572245a634df85a06fc281596eb1c82ed77c0e",
+                "url": "https://api.github.com/repos/benjaminu/AliDatatableBundle/zipball/bc6c6564f878e7afb6b77b0609ee74a9a50cb105",
+                "reference": "bc6c6564f878e7afb6b77b0609ee74a9a50cb105",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "datatable",
                 "jquery"
             ],
-            "time": "2013-02-01 13:50:39"
+            "time": "2013-03-18 09:21:03"
         },
         {
             "name": "doctrine/common",
