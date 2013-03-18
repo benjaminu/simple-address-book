@@ -1,0 +1,4 @@
+xtreem_address_book:
+    resource: "@XtreemAddressBookBundle/Controller/"
+    type:     annotation
+    prefix:   /
