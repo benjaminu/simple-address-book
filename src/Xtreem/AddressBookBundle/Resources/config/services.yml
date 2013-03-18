@@ -1,3 +1,12 @@
 # parameters:
 
-# services:
+services:
+    address_book_type:
+        class: Xtreem\AddressBookBundle\Form\AddressBookType
+        tags:
+            - { name: form.type, alias: address_book_type }
+
+    address_type:
+        class: Xtreem\AddressBookBundle\Form\AddressType
+        tags:
+            - { name: form.type, alias: address_type }
