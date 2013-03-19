@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\FormInterface;
+use Xtreem\AddressBookBundle\Entity\AddressBook;
 
 /**
  * AddressBook Service.
@@ -150,22 +152,7 @@ class AddressBookService
         $formType     = $this->getEntityFormTypeName();
         $form         = $this->createForm(new $formType, $this->entity);
 
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $this->em->persist($this->entity);
-            $this->em->flush();
-
-            return array(
-                'result' => true,
-                'id'     => $this->entity->getId(),
-            );
-        }
-
-        return array(
-            'result' => false,
-            'form'   => $form
-        );
+        return $this->save($this->entity, $request, $form);
     }
 
     /**
@@ -182,15 +169,45 @@ class AddressBookService
         $formType     = $this->getEntityFormTypeName();
         $form         = $this->createForm(new $formType, $this->entity);
 
-        $form->bind($request);
+        return $this->save($this->entity, $request, $form);
+    }
 
+    /**
+     * Delete entry.
+     *
+     * @param mixed   $id      Entry id.
+     * @param Request $request Request.
+     *
+     * @return void
+     */
+    public function delete($id, Request $request)
+    {
+        $entity = $this->find($id);
+
+        $this->em->remove($entity);
+        $this->em->flush();
+
+        return true;
+    }
+
+    /**
+     * Update/create addressbook record.
+     *
+     * @param AddressBook   $entity  Doctrine entity.
+     * @param Request       $request Request.
+     * @param FormInterface $form    Form.
+     *
+     * @return array
+     */
+    public function save(AddressBook $entity, Request $request, FormInterface $form)
+    {
         if ($form->isValid()) {
-            $this->em->persist($this->entity);
+            $this->em->persist($entity);
             $this->em->flush();
 
             return array(
                 'result' => true,
-                'id'     => $this->entity->getId(),
+                'id'     => $entity->getId(),
             );
         }
 
@@ -247,7 +264,7 @@ class AddressBookService
      * @param mixed $data    Data.
      * @param array $options Options.
      *
-     * @return void
+     * @return FormInterface
      */
     public function createForm($type, $data = null, array $options = array())
     {
