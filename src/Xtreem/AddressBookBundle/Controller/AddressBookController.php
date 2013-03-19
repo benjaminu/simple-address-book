@@ -21,6 +21,34 @@ use Doctrine\ORM\Query\QueryException;
 class AddressBookController extends Controller
 {
     /**
+     * Flash message success type.
+     *
+     * @var string
+     */
+    const TYPE_FLASH_MESSAGE_SUCCESS = 'success';
+
+    /**
+     * Flash message error type.
+     *
+     * @var string
+     */
+    const TYPE_FLASH_MESSAGE_ERROR = 'error';
+
+    /**
+     * Flash message warning type.
+     *
+     * @var string
+     */
+    const TYPE_FLASH_MESSAGE_WARNING = 'warning';
+
+    /**
+     * Flash message info type.
+     *
+     * @var string
+     */
+    const TYPE_FLASH_MESSAGE_INFO = 'info';
+
+    /**
      * Service name.
      *
      * @var string
@@ -37,9 +65,17 @@ class AddressBookController extends Controller
     /**
      * Current request.
      *
-     * @var \Symfony\Component\HttpFoundation\Reques
+     * @var \Symfony\Component\HttpFoundation\Request
      */
     protected $request;
+
+    /**
+     * Session object.
+     *
+     * @var \Symfony\Component\HttpFoundation\Session\Session
+     */
+    protected $session;
+
 
     /**
      * Init action.
@@ -50,6 +86,7 @@ class AddressBookController extends Controller
     {
         $this->service = $this->get($this->serviceName);
         $this->request = $this->getRequest();
+        $this->session = $this->get('session');
 
         $this->service->setController($this);
         $this->service->init($this->container);
@@ -113,7 +150,11 @@ class AddressBookController extends Controller
         if ($this->isPost()) {
             $result = $this->service->create($this->request);
             if ($result['result']) {
-                // Set flash message
+                $this->setFlashMessage(
+                    self::TYPE_FLASH_MESSAGE_SUCCESS,
+                    'Address book record was successfully added!'
+                );
+
                 return $this->redirect(
                     $this->generateUrl('show', array('id' => $result['id']))
                 );
@@ -145,7 +186,11 @@ class AddressBookController extends Controller
         if ($this->isPost()){
             $result = $this->service->update($id, $this->request);
             if ($result['result']) {
-                // Set flash message
+                $this->setFlashMessage(
+                    self::TYPE_FLASH_MESSAGE_SUCCESS,
+                    'Address book record was successfully updated!'
+                );
+
                 return $this->redirect(
                     $this->generateUrl('show', array('id' => $result['id']))
                 );
@@ -231,5 +276,18 @@ class AddressBookController extends Controller
     protected function isPost()
     {
         return $this->getRequest()->getMethod() == 'POST';
+    }
+
+    /**
+     * Sets flash messages.
+     *
+     * @param string $type    Type of flash message.
+     * @param string $message Message to be displayed.
+     *
+     * @return void
+     */
+    protected function setFlashMessage($type, $message)
+    {
+        $this->session->getFlashBag()->add($type, $message);
     }
 }
