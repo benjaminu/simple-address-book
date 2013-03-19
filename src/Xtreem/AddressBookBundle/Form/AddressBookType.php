@@ -29,6 +29,7 @@ class AddressBookType extends AbstractType
                 array(
                     'error_bubbling' => true,
                     'label'          => 'First name',
+                    'required'       => false,
                 )
             )
             ->add(
@@ -37,6 +38,23 @@ class AddressBookType extends AbstractType
                 array(
                     'error_bubbling' => true,
                     'label'          => 'Last name',
+                    'required'       => false,
+                )
+            )
+            ->add(
+                'telephoneHome',
+                null,
+                array(
+                    'error_bubbling' => true,
+                    'label'          => 'Telephone home',
+                )
+            )
+            ->add(
+                'telephoneMobile',
+                null,
+                array(
+                    'error_bubbling' => true,
+                    'label'          => 'Telephone mobile',
                 )
             )
             ->add(

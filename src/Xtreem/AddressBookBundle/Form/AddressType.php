@@ -52,7 +52,7 @@ class AddressType extends AbstractType
                 null,
                 array(
                     'error_bubbling' => true,
-                    'label'          => 'Post code',
+                    'label'          => 'Postcode',
                 )
             );
     }

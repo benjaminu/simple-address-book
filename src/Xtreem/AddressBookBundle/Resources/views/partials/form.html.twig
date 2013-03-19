@@ -1,0 +1,40 @@
+<form id="addressbook" action="{{ formAction }}" class="form-inline" method="post" {{ form_enctype(form) }}>
+    {{ form_errors(form) }}
+    {{ form_widget(form._token) }}
+    <fieldset>
+        <legend><h3>Contact details</h3></legend>
+        <div class="row">
+            <div class="span3">
+                {{ form_row(form.firstName) }}
+            </div>
+
+            <div class="span3">
+                {{ form_row(form.lastName) }}
+            </div>
+
+            <div class="span3">
+                {{ form_row(form.telephoneHome) }}
+            </div>
+
+            <div class="span3">
+                {{ form_row(form.telephoneMobile) }}
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend><h3>Contact address</h3></legend>
+        <div class="row">
+            {% for addressData in form.address %}
+                <div class="span3">
+                    {{ form_row(addressData) }}
+                </div>
+            {% endfor %}
+        </div>
+    </fieldset>
+
+    <div class="form-actions" style="clear: both;">
+        <button class="btn btn-success" id="submit-button" type="submit">Save</button>
+        <a class="btn" href="{{ cancelUrl }}">Cancel</a>
+    </div>
+</form>

@@ -81,11 +81,43 @@ class AddressBook
      * @var string $postCode
      *
      * @ORM\Column(type="string", length=32, name="post_code", nullable=false)
-     * @Assert\Length(max = "32", maxMessage="Please enter a post code that contains less than 32 characters.")
-     * @Assert\NotBlank(message="Please provide a valid post code.")
+     * @Assert\Length(max = "32", maxMessage="Please enter a postcode that contains less than 32 characters.")
+     * @Assert\NotBlank(message="Please provide a valid postcode.")
      * @Assert\Type(type="string")
      */
     protected $postCode;
+
+    /**
+     * @var string $telephoneHome
+     *
+     * @ORM\Column(type="string", length=32, name="telephone_home", nullable=true)
+     * @Assert\Length(
+     *     max = "32",
+     *     maxMessage="Please enter a home telephone number that contains less than 32 characters."
+     * )
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     message="Your home telephone number should contain numbers only"
+     * )
+     * @Assert\Type(type="string")
+     */
+    protected $telephoneHome;
+
+    /**
+     * @var string $telephoneMobile
+     *
+     * @ORM\Column(type="string", length=32, name="telephone_mobile", nullable=true)
+     * @Assert\Length(
+     *     max = "32",
+     *     maxMessage="Please enter a mobile telephone number that contains less than 32 characters."
+     * )
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     message="Your mobile telephone number should contain numbers only"
+     * )
+     * @Assert\Type(type="string")
+     */
+    protected $telephoneMobile;
 
     /**
      * @var \DateTime $created
@@ -272,6 +304,54 @@ class AddressBook
     public function getPostCode()
     {
         return $this->postCode;
+    }
+
+    /**
+     * Set home telephone number.
+     *
+     * @param string $telephoneHome
+     *
+     * @return AddressBook
+     */
+    public function setTelephoneHome($telephoneHome)
+    {
+        $this->telephoneHome = $telephoneHome;
+
+        return $this;
+    }
+
+    /**
+     * Get home telephone number.
+     *
+     * @return string
+     */
+    public function getTelephoneHome()
+    {
+        return $this->telephoneHome;
+    }
+
+    /**
+     * Set mobile telephone number.
+     *
+     * @param string $telephoneMobile
+     *
+     * @return AddressBook
+     */
+    public function setTelephoneMobile($telephoneMobile)
+    {
+        $this->telephoneMobile = $telephoneMobile;
+
+        return $this;
+    }
+
+    /**
+     * Get mobile telephone number.
+     *
+     * @return string
+     */
+    public function getTelephoneMobile()
+    {
+        return $this->telephoneMobile;
     }
 
     /**
