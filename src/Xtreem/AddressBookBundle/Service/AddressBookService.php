@@ -180,7 +180,7 @@ class AddressBookService
     {
         $this->entity = $this->find($id);
         $formType     = $this->getEntityFormTypeName();
-        $form         = $this->createForm($formType, $this->entity);
+        $form         = $this->createForm(new $formType, $this->entity);
 
         $form->bind($request);
 

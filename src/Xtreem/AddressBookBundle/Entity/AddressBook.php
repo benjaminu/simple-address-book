@@ -42,7 +42,7 @@ class AddressBook
     /**
      * @ORM\Column(type="string", length=32, name="line_1", nullable=false)
      * @Assert\Length(max = "32", maxMessage="The first line of your address should contain less than 32 characters.")
-     * @Assert\NotBlank(message="Please provide a valid address.")
+     * @Assert\NotBlank(message="Please provide a valid first address line.")
      * @Assert\Type(type="string")
      */
     protected $line1;
@@ -57,7 +57,7 @@ class AddressBook
     /**
      * @ORM\Column(type="string", length=32, name="city", nullable=false)
      * @Assert\Length(max = "32", maxMessage="Please enter a city that contains less than 32 characters.")
-     * @Assert\NotBlank(message="City.")
+     * @Assert\NotBlank(message="Please provide a valid city.")
      * @Assert\Type(type="string")
      */
     protected $city;
