@@ -1,12 +1,8 @@
 {% extends '::base.html.twig' %}
-
 {% block body %}
-    <ul class="breadcrumb">
-        <li class="active">Address book</li>
-    </ul>
-
-    <div class="page-header">
-        <h1>Address book</h1>
+    <div class="hero-unit">
+        <h1>Simple Address Book</h1>
+        <p>This is a simple Symfony2 address book bundle. Enjoy!!</p>
     </div>
 
     {{ datatable({
@@ -14,6 +10,7 @@
             'view_route':    'show',
             'edit_route':    'edit',
             'delete_route':  'delete',
+            'delete_token':  _token,
             'main_template': 'XtreemAddressBookBundle:partials:datatable_template.html.twig',
             'js' : {
                 'sAjaxSource' : path('grid')

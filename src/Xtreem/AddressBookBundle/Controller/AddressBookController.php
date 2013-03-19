@@ -77,7 +77,13 @@ class AddressBookController extends Controller
     {
         $this->service->initDatatable();
 
-        return array();
+        $csrfProvider = $this->get('form.csrf_provider');
+
+        $token = $csrfProvider->generateCsrfToken(
+            $this->container->getParameter('intention')
+        );
+
+        return array('_token' => $token);
     }
 
     /**
@@ -135,6 +141,7 @@ class AddressBookController extends Controller
     public function editAction($id)
     {
         $form = $this->service->getForm($id);
+
         if ($this->isPost()){
             $result = $this->service->update($id, $this->request);
             if ($result['result']) {
@@ -170,8 +177,18 @@ class AddressBookController extends Controller
      */
     public function deleteAction($id)
     {
-        if (! $request->isXmlHttpRequest()) {
-            throw new HttpException(400, 'Bad Request');
+        if (! $this->request->isXmlHttpRequest()) {
+            throw new HttpException(400, 'Bad request.');
+        }
+
+        $csrfProvider = $this->get('form.csrf_provider');
+        if (
+            ! $csrfProvider->isCsrfTokenValid(
+                $this->container->getParameter('intention'),
+                $this->request->request->get('_token')
+            )
+        ) {
+            throw new HttpException(500, 'Invalid CSRF token.');
         }
 
         try {

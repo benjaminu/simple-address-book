@@ -1,0 +1,12 @@
+body {
+    padding-top: 40px !important;
+}
+
+.flash-message {
+    position: absolute;
+    top: 10%;
+    width: 70%;
+    left: 15%;
+    margin: 0 auto 5px auto;
+    z-index: 1250;
+}

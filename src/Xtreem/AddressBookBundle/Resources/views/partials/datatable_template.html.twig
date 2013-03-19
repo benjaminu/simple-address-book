@@ -79,12 +79,58 @@
                                 $out += $link_edit;
                             {% endif %}
 
+                            {% if delete_route is defined %}
+                                var $delete_url = strtr(
+                                    '{{ pathNoReq(delete_route) }}',
+                                    { '{id}': oObj.aData[{{ fields | length }}-1] }
+                                );
+                                var $link_delete = '<li><a data-delete-btn href="'+escape($delete_url)+'">Delete</a></li>';
+
+                                $out += $link_delete;
+                            {% endif %}
+
                             return $out += '</ul></div>';
                         },
                         'aTargets': [ {{ fields | length }}-1 ]
                     }
                 {% endif %}
-            ]
+            ],
+            'fnDrawCallback': function(oSettings) {
+                $('[data-delete-btn]').on('click', function(e){
+                    e.preventDefault();
+                    if (! confirm('Do you really want to delete this record?')) {
+                        return false;
+                    }
+
+                    var button   = $(this);
+                    var selector = $('#flashes');
+
+                    $.ajax({
+                        url: button.attr('href'),
+                        type: 'POST',
+                        dataType: 'json',
+                        {% if delete_token is defined %}
+                        data: { _token: '{{ delete_token }}' },
+                        {% endif %}
+                        success: function(response) {
+                            button.button('reset');
+
+                            if (! response.result) {
+                                set_flash_message(selector, 'error', response.message);
+                            } else {
+                                set_flash_message(selector, 'success', response.message);
+                                setTimeout(function() {
+                                    window.location.reload();
+                                }, 2000);
+                            }
+                        },
+                        error: function(response) {
+                            button.button('reset');
+                            set_flash_message(selector, 'error', 'An unknown error occured!');
+                        }
+                    });
+                });
+            }
         });
 
         $('#{{id}}').dataTable($defaults);
