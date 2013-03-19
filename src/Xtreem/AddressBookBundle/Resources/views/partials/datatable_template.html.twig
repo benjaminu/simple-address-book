@@ -1,0 +1,107 @@
+<script type="text/javascript">
+    jQuery(document).ready(function($){
+        $options = {{ js | raw }}
+
+        $defaults = {
+            'bProcessing': true,
+            'bServerSide': true,
+            'bAutoWidth': false,
+            'bJQueryUI': false,
+            'bFilter': {% if search %} true {% else %} false {% endif %},
+            'sDom': "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+            'sPaginationType': 'bootstrap',
+            'aLengthMenu': [[5, 10, 25, -1], [5, 10, 25, 'All']],
+            'iDisplayLength': 10,
+            'sAjaxSource': null,
+            'bScrollInfinite'  : false,
+            'bScrollCollapse'  : false,
+            'bPaginate': true,
+            'bLengthChange': true,
+            'bSort': true,
+            'oLanguage': {'sLengthMenu': '_MENU_ records per page'}
+        };
+
+        $.extend($defaults, $options);
+
+        $.extend($defaults, {
+            'aoColumnDefs': [
+                {% if columnSortStatus is defined %}
+                    {% for key, value in columnSortStatus %}
+                        {
+                            'bSortable': {% if value %}true{% else %}false{% endif %},
+                            'aTargets': [ {{ key }} ]
+                        },
+                    {% endfor %}
+                {% endif %}
+                {% if columnVisibilityStatus is defined %}
+                    {% for key, value in columnVisibilityStatus %}
+                        {
+                            'bVisible': {% if value %}true{% else %}false{% endif %},
+                            'aTargets': [ {{ key }} ]
+                        },
+                    {% endfor %}
+                {% endif %}
+                {% if columnClasses is defined %}
+                    {% for key, value in columnClasses %}
+                        {
+                            'fnRender': function(obj) {
+                                return '<span class="{{ value }}">'+obj.aData[ obj.iDataColumn ]+'</span>';
+                            },
+                            'aTargets': [ {{ key }} ]
+                        },
+                    {% endfor %}
+                {% endif %}
+                {% if action and not action_twig %}
+                    {
+                        'fnRender': function ( oObj ) {
+                            var $out = '<div class="btn-group">'+
+                                '<button class="btn btn-small">Actions</button>'+
+                                '<button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>'+
+                                '<ul class="dropdown-menu">';
+
+                            {% if view_route is defined %}
+                                var $view_url = strtr(
+                                    '{{ pathNoReq(view_route) }}',
+                                    { '{id}': oObj.aData[{{ fields | length }}-1] }
+                                );
+                                var $link_view = '<li><a href="'+escape($view_url)+'">View</a></li>';
+
+                                $out += $link_view;
+                            {% endif %}
+
+                            {% if edit_route is defined %}
+                                var $edit_url = strtr(
+                                    '{{ pathNoReq(edit_route) }}',
+                                    { '{id}': oObj.aData[{{ fields | length }}-1] }
+                                );
+                                var $link_edit = '<li><a href="'+escape($edit_url)+'">Edit</a></li>';
+
+                                $out += $link_edit;
+                            {% endif %}
+
+                            return $out += '</ul></div>';
+                        },
+                        'aTargets': [ {{ fields | length }}-1 ]
+                    }
+                {% endif %}
+            ]
+        });
+
+        $('#{{id}}').dataTable($defaults);
+    });
+</script>
+<table class="table table-bordered table-condensed table-striped" id="{{id}}">
+    <thead style="background: #e5e5e5;">
+        <tr>
+        {% for label,key in fields %}
+            {% if label != '_identifier_' %}
+                <th>{{ label }}</th>
+            {% endif %}
+        {% endfor %}
+        {% if action %}
+            <th>Actions</th>
+        {% endif %}
+        </tr>
+    </thead>
+</table>
+<script src="{{ asset('bundles/alidatatable/js/jquery.datatable.inc.js') }}"></script>

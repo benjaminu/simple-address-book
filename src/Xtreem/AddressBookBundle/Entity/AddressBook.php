@@ -23,6 +23,7 @@ class AddressBook
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\Column(type="string", length=100, name="first_name")
      * @Assert\Length(max = "100", maxMessage="Please enter a first name that contains less than 100 characters.")
@@ -42,7 +43,7 @@ class AddressBook
     protected $lastName;
 
     /**
-     * @ORM\Column(type="string", length=32, name="line1", nullable=false)
+     * @ORM\Column(type="string", length=32, name="line_1", nullable=false)
      * @Assert\Length(max = "32", maxMessage="The first line of your address should contain less than 32 characters.")
      * @Assert\NotBlank(message="Please provide a valid address.")
      * @Assert\Type(type="string")
@@ -51,7 +52,7 @@ class AddressBook
     protected $line1;
 
     /**
-     * @ORM\Column(type="string", length=32, name="line2", nullable=true)
+     * @ORM\Column(type="string", length=32, name="line_2", nullable=true)
      * @Assert\Length(max = "32", maxMessage="The second line of your address should contain less than 32 characters.")
      * @Assert\Type(type="string")
      * @Gedmo\Versioned

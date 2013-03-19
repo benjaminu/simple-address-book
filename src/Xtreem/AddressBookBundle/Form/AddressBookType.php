@@ -41,7 +41,7 @@ class AddressBookType extends AbstractType
             )
             ->add(
                 'address',
-                'address',
+                'address_type',
                 array('data_class' => 'Xtreem\AddressBookBundle\Entity\AddressBook')
             );
     }

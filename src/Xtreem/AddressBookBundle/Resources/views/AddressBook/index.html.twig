@@ -1,0 +1,29 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <ul class="breadcrumb">
+        <li class="active">Address book</li>
+    </ul>
+
+    <div class="page-header">
+        <h1>Address book</h1>
+    </div>
+
+    {{ datatable({
+            'id':            'addressbook',
+            'view_route':    'show',
+            'edit_route':    'edit',
+            'delete_route':  'delete',
+            'main_template': 'XtreemAddressBookBundle:partials:datatable_template.html.twig',
+            'js' : {
+                'sAjaxSource' : path('grid')
+            }
+        })
+    }}
+
+    <div class="form-actions">
+        <a class="btn btn-primary" href="{{ path('add') }}">
+            Add new address book entry
+        </a>
+    </div>
+{% endblock %}

@@ -2,12 +2,39 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <title>{% block title %}Simple Address Book!{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('assets/css/libs/bootstrap/css/bootstrap.min.css') }}">
+        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% block headjavascripts %}
+            <script type="text/javascript" src="{{ asset('assets/js/libs/modernizr.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/libs/jquery-1.8.3.min.js') }}"></script>
+        {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        <div class="container">
+            <header class="header">
+                {% include '::partials/header.html.twig' %}
+            </header>
+
+            <section id="content">
+                <div class="row">
+                    <div class="span12">
+                        {% block body %}{% endblock %}
+                    </div>
+                </div>
+            </section>
+
+            <footer class="footer">
+                {% include '::partials/footer.html.twig' %}
+            </footer>
+        </div>
+        {% block footerjavascripts %}
+            <script type="text/javascript" src="{{ asset('assets/js/libs/jquery.dataTables.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/libs/datatable-bootstrap-plugin.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/libs/bootstrap.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/script.js?1349950672') }}"></script>
+        {% endblock %}
     </body>
 </html>
