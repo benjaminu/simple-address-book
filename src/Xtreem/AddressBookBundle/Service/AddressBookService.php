@@ -201,6 +201,8 @@ class AddressBookService
      */
     public function save(AddressBook $entity, Request $request, FormInterface $form)
     {
+        $form->bind($request);
+
         if ($form->isValid()) {
             $this->em->persist($entity);
             $this->em->flush();
@@ -269,33 +271,5 @@ class AddressBookService
     public function createForm($type, $data = null, array $options = array())
     {
         return $this->container->get('form.factory')->create($type, $data, $options);
-    }
-
-    /**
-     * Returns a form's error messages as an array.
-     *
-     * @param Form $form Form from which error messages are to be retrieved.
-     *
-     * @return array
-     */
-    private function getErrorMessages(Form $form)
-    {
-        $errors = array();
-
-        foreach ($form->getErrors() as $key => $error) {
-            $message = $this->container->get('translator')->trans($error->getMessage(), array(), 'validators');
-
-            $errors[$key] = $message;
-        }
-
-        if ($form->hasChildren()) {
-            foreach ($form->getChildren() as $child) {
-                if (! $child->isValid()) {
-                    $errors[$child->getName()] = $this->getErrorMessages($child);
-                }
-            }
-        }
-
-        return $errors;
     }
 }
