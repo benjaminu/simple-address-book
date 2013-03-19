@@ -3,9 +3,12 @@
 namespace Xtreem\AddressBookBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\QueryException;
 
 /**
  * AddressBook Controller.
@@ -167,15 +170,24 @@ class AddressBookController extends Controller
      */
     public function deleteAction($id)
     {
-        // confirm ajax  equest
-        try {
-            $this->service->delete($id, $this->request);
-            $response = array();
-        } catch (Exception $e) {
-            $response = array();
+        if (! $request->isXmlHttpRequest()) {
+            throw new HttpException(400, 'Bad Request');
         }
 
-        return $response;
+        try {
+            $this->service->delete($id, $this->request);
+            $response = array(
+                'result'  => true,
+                'message' => 'Address book record was deleted successfully.'
+            );
+        } catch (QueryException $e) {
+            $response = array(
+                'result'  => false,
+                'message' => 'An error occured while attempting to delete address book record ',
+            );
+        }
+
+        return new JsonResponse($response);
     }
 
     /**
