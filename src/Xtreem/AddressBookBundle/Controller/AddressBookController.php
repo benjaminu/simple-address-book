@@ -49,7 +49,7 @@ class AddressBookController extends Controller
         $this->request = $this->getRequest();
 
         $this->service->setController($this);
-        $this->service->setContainer($this->container);
+        $this->service->init($this->container);
     }
 
     /**
@@ -105,7 +105,9 @@ class AddressBookController extends Controller
             $result = $this->service->create($this->request);
             if ($result['result']) {
                 // Set flash message
-                // Redirect user to show page.
+                return $this->redirect(
+                    $this->generateUrl('show', array('id' => $result['id']))
+                );
             }
 
             $form = $result['form'];
@@ -134,7 +136,9 @@ class AddressBookController extends Controller
             $result = $this->service->update($id, $this->request);
             if ($result['result']) {
                 // Set flash message
-                // Redirect user to show page.
+                return $this->redirect(
+                    $this->generateUrl('show', array('id' => $result['id']))
+                );
             }
 
             $form = $result['form'];
@@ -145,8 +149,6 @@ class AddressBookController extends Controller
             'editForm' => $form->createView(),
             'errors'   => $form->getErrors()
         );
-
-        return array();
     }
 
     /**

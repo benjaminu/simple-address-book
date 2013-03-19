@@ -4,19 +4,19 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: %locale% }
+    translator:      { fallback: en }
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: %kernel.debug%
-    form:            ~
-    csrf_protection: ~
+    form:            true
+    csrf_protection: true
     validation:      { enable_annotations: true }
     templating:
         engines: ['twig']
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
-    trusted_proxies: ~
+    trusted_proxies: false
     session:         ~
     fragments:       ~
 
@@ -63,3 +63,13 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
     spool:     { type: memory }
+
+# Stof Doctrine Extensions Configuration
+stof_doctrine_extensions:
+   default_locale: %locale%
+   translation_fallback: true
+   orm:
+       default:
+          timestampable: true
+          translatable: false
+          softdeleteable: true

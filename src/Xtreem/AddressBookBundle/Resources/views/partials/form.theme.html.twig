@@ -1,0 +1,20 @@
+{% block field_row %}
+    <div class="control-group {% if errors|length > 0 %}error{% endif %} {{attr.class|default('')}}">
+        {{ form_label(form, label) }}
+        <div class="controls">
+            {{ form_widget(form, { 'attr': { 'class': attr.class|default('') } }) }}
+        </div>
+    </div>
+{% endblock field_row %}
+
+{% block form_errors %}
+{% spaceless %}
+    <div class="alert fade in alert-error" {% if errors|length == 0 %}style="display: none" {% endif %}>
+        {% for index, error in errors %}
+            {{ error.messageTemplate|trans(error.messageParameters, 'validators')|striptags('<a>')|raw }}<br>
+        {% endfor %}
+    </div>
+
+    <hr {% if errors|length == 0 %}style="display: none" {% endif %}>
+{% endspaceless %}
+{% endblock form_errors %}

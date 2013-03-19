@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Ali\DatatableBundle\AliDatatableBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
 
             new Xtreem\AddressBookBundle\XtreemAddressBookBundle(),
         );

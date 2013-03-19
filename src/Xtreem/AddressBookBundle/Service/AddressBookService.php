@@ -56,6 +56,17 @@ class AddressBookService
     protected $container;
 
     /**
+     * Init action.
+     *
+     * @return void
+     */
+    public function init(ContainerInterface $container)
+    {
+        $this->setContainer($container);
+        $this->em = $this->container->get('doctrine')->getManager();
+    }
+
+    /**
      * Sets controller instance.
      *
      * @param Controller $controller Controler instance.
@@ -134,7 +145,8 @@ class AddressBookService
      */
     public function create(Request $request)
     {
-        $this->entity = new $this->getEntityName();
+        $entityName   = $this->getEntityName();
+        $this->entity = new $entityName;
         $formType     = $this->getEntityFormTypeName();
         $form         = $this->createForm(new $formType, $this->entity);
 
@@ -144,7 +156,10 @@ class AddressBookService
             $this->em->persist($this->entity);
             $this->em->flush();
 
-            return array('result' => true);
+            return array(
+                'result' => true,
+                'id'     => $this->entity->getId(),
+            );
         }
 
         return array(
@@ -173,7 +188,10 @@ class AddressBookService
             $this->em->persist($this->entity);
             $this->em->flush();
 
-            return array('result' => true);
+            return array(
+                'result' => true,
+                'id'     => $this->entity->getId(),
+            );
         }
 
         return array(
@@ -197,7 +215,7 @@ class AddressBookService
             $entity = $this->find($id);
         }
 
-        $formType = $this->getEntityTypeName();
+        $formType = $this->getEntityFormTypeName();
 
         return $this->createForm(new $formType, $entity);
     }
@@ -220,6 +238,20 @@ class AddressBookService
     public function getEntityFormTypeName()
     {
         return str_replace('Entity', 'Form', $this->getEntityName()).'Type';
+    }
+
+    /**
+     * Create form.
+     *
+     * @param mixed $type    Type oject.
+     * @param mixed $data    Data.
+     * @param array $options Options.
+     *
+     * @return void
+     */
+    public function createForm($type, $data = null, array $options = array())
+    {
+        return $this->container->get('form.factory')->create($type, $data, $options);
     }
 
     /**

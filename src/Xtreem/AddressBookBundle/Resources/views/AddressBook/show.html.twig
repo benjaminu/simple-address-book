@@ -1,1 +1,55 @@
 {% extends '::base.html.twig' %}
+
+{% block body %}
+    <ul class="breadcrumb">
+        <li><a href="{{ path('home') }}">Address book records</a> <span class="divider">/</span></li>
+        <li><a href="{{ path('show', { 'id': entity.id }) }}"> {{entity.id}} </a> <span class="divider">/</span></li>
+        <li class="active">Show</li>
+    </ul>
+    <div class="page-header">
+        <h1>Address book record</h1>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+        <div id="contact-details" class="span6">
+            <h3> Details </h3>
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <th>ID</th>
+                        <td>{{ entity.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>First name</th>
+                        <td>{{ entity.firstName | title }}</td>
+                    </tr>
+                    <tr>
+                        <th>Last name</th>
+                        <td>{{ entity.lastName | title }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="contact-client-details" class="span6">
+            <h3>Contact address</h3>
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <td>
+                            <address>
+                                {% for line in entity.contactAddress %}
+                                    {{ line }}<br/>
+                                {% endfor %}
+                            </address>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="form-actions">
+        <a class="btn" href="{{ path('home') }}">
+            Back to list of addresses
+        </a>
+        <a class="btn btn-primary" href="{{ path('edit', { 'id': entity.id }) }}">Edit</a>
+    </div>
+{% endblock %}

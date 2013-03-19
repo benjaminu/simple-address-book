@@ -1,6 +1,49 @@
 {% extends '::base.html.twig' %}
+
+{% form_theme form 'XtreemAddressBookBundle:partials:form.theme.html.twig' %}
+
 {% block title %}Add a new addressbook record{% endblock %}
 
 {% block body %}
-Hey!!
+    <ul class="breadcrumb">
+        <li><a href="{{ path('home') }}">Address book</a> <span class="divider">/</span></li>
+        <li class="active">Add</li>
+    </ul>
+
+    <div class="page-header">
+        <h2> Add address book record </h2>
+    </div>
+
+    <form id="addressbook" action="{{ path('add') }}" class="form-inline" method="post" {{ form_enctype(form) }}>
+        {{ form_errors(form) }}
+        {{ form_widget(form._token) }}
+        <fieldset>
+            <legend><h3>Contact details</h3></legend>
+            <div class="row">
+                <div class="span3">
+                    {{ form_row(form.firstName) }}
+                </div>
+
+                <div class="span3">
+                    {{ form_row(form.lastName) }}
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend><h3>Contact address</h3></legend>
+            <div class="row">
+                {% for addressData in form.address %}
+                    <div class="span3">
+                        {{ form_row(addressData) }}
+                    </div>
+                {% endfor %}
+            </div>
+        </fieldset>
+
+        <div class="form-actions" style="clear: both;">
+            <button class="btn btn-success" id="submit-button" type="submit">Save</button>
+            <a class="btn" href="{{ path('home') }}">Cancel</a>
+        </div>
+    </form>
 {% endblock %}

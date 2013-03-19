@@ -13,7 +13,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity
  * @ORM\Table(name="address_book")
  * @Gedmo\SoftDeleteable(fieldName="deleted")
- * @Gedmo\Loggable
  */
 class AddressBook
 {
@@ -25,20 +24,18 @@ class AddressBook
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=100, name="first_name")
+     * @ORM\Column(type="string", length=100, name="first_name", nullable=false)
      * @Assert\Length(max = "100", maxMessage="Please enter a first name that contains less than 100 characters.")
      * @Assert\NotBlank(message="Please enter a valid first name.")
      * @Assert\Type(type="string")
-     * @Gedmo\Versioned
      */
     protected $firstName;
 
     /**
-     * @ORM\Column(type="string", length=100, name="last_name")
+     * @ORM\Column(type="string", length=100, name="last_name", nullable=false)
      * @Assert\Length(max = "100", maxMessage="Please enter a last name that contains less than 100 characters.")
      * @Assert\NotBlank(message="Please enter a valid last name.")
      * @Assert\Type(type="string")
-     * @Gedmo\Versioned
      */
     protected $lastName;
 
@@ -47,7 +44,6 @@ class AddressBook
      * @Assert\Length(max = "32", maxMessage="The first line of your address should contain less than 32 characters.")
      * @Assert\NotBlank(message="Please provide a valid address.")
      * @Assert\Type(type="string")
-     * @Gedmo\Versioned
      */
     protected $line1;
 
@@ -55,7 +51,6 @@ class AddressBook
      * @ORM\Column(type="string", length=32, name="line_2", nullable=true)
      * @Assert\Length(max = "32", maxMessage="The second line of your address should contain less than 32 characters.")
      * @Assert\Type(type="string")
-     * @Gedmo\Versioned
      */
     protected $line2;
 
@@ -64,7 +59,6 @@ class AddressBook
      * @Assert\Length(max = "32", maxMessage="Please enter a city that contains less than 32 characters.")
      * @Assert\NotBlank(message="City.")
      * @Assert\Type(type="string")
-     * @Gedmo\Versioned
      */
     protected $city;
 
@@ -73,7 +67,6 @@ class AddressBook
      * @Assert\Length(max = "32", maxMessage="Please enter a post code that contains less than 32 characters.")
      * @Assert\NotBlank(message="Please provide a valid post code.")
      * @Assert\Type(type="string")
-     * @Gedmo\Versioned
      */
     protected $postCode;
 
@@ -263,14 +256,18 @@ class AddressBook
      *
      * @return array
      */
-    public function getAddress()
+    public function getContactAddress()
     {
         $address = array();
 
-        $address[] = $this->$getLine1();
-        $address[] = $this->$getLine2();
-        $address[] = $this->getCity();
-        $address[] = $this->getPostCode();
+        $address[] = ucwords(strtolower($this->getLine1()));
+
+        if ($this->getLine2()) {
+            $address[] = ucwords(strtolower($this->getLine2()));
+        }
+
+        $address[] = ucwords(strtolower($this->getCity()));
+        $address[] = strtoupper(strtolower($this->getPostCode()));
 
         return $address;
     }
