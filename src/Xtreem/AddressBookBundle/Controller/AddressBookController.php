@@ -85,7 +85,7 @@ class AddressBookController extends Controller
     protected function init()
     {
         $this->service = $this->get($this->serviceName);
-        $this->request = $this->getRequest();
+        $this->request = $this->get('request');
         $this->session = $this->get('session');
 
         $this->service->setController($this);
@@ -114,11 +114,7 @@ class AddressBookController extends Controller
     {
         $this->service->initDatatable();
 
-        $csrfProvider = $this->get('form.csrf_provider');
-
-        $token = $csrfProvider->generateCsrfToken(
-            $this->container->getParameter('intention')
-        );
+        $token = $this->getCsrfToken();
 
         return array('_token' => $token);
     }
@@ -226,13 +222,7 @@ class AddressBookController extends Controller
             throw new HttpException(400, 'Bad request.');
         }
 
-        $csrfProvider = $this->get('form.csrf_provider');
-        if (
-            ! $csrfProvider->isCsrfTokenValid(
-                $this->container->getParameter('intention'),
-                $this->request->request->get('_token')
-            )
-        ) {
+        if (! $this->isCsrfTokenValid($this->request->request->get('_token'))) {
             throw new HttpException(500, 'Invalid CSRF token.');
         }
 
@@ -289,5 +279,38 @@ class AddressBookController extends Controller
     protected function setFlashMessage($type, $message)
     {
         $this->session->getFlashBag()->add($type, $message);
+    }
+
+    /**
+     * Returns a CSRF token.
+     *
+     * @return void
+     */
+    protected function getCsrfToken()
+    {
+        $csrfProvider = $this->get('form.csrf_provider');
+
+        $token = $csrfProvider->generateCsrfToken(
+            $this->container->getParameter('intention')
+        );
+
+        return $token;
+    }
+
+    /**
+     * Validates CSRF token.
+     *
+     * @param string $token Token to validate.
+     *
+     * @return void
+     */
+    protected function isCsrfTokenValid($token)
+    {
+        $csrfProvider = $this->get('form.csrf_provider');
+
+        return $csrfProvider->isCsrfTokenValid(
+            $this->container->getParameter('intention'),
+            $token
+        );
     }
 }

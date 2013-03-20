@@ -2,10 +2,11 @@
 {% block body %}
     <div class="hero-unit">
         <h1>Simple Address Book</h1>
-        <p>This is a simple Symfony2 address book bundle. Enjoy!!</p>
+        <p>This is my simple Symfony2 address book bundle. Enjoy!!</p>
     </div>
 
-    {{ datatable({
+    {{
+        datatable({
             'id':            'addressbook',
             'view_route':    'show',
             'edit_route':    'edit',
