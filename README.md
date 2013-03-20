@@ -1,4 +1,4 @@
-simple-address-book
+Simple Address Book
 ===================
 
 My simple web based symfony2 address book
