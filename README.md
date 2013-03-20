@@ -68,3 +68,47 @@ Note that you **must** have composer installed and be able to execute the `compo
     php app/console doctrine:database:create
     php app/console doctrine:schema:update --force
     php app/console assets:install --symlink web
+
+### e) Setup your web environment - this assumes you have some pre-existing knowledge of setups.
+Create a virtual host:
+
+Run the following on a linux command line:
+
+```
+    sudo touch /etc/apache2/sites-available/simple-address-book
+    sudo vi /etc/apache2/sites-available/simple-address-book
+```
+
+Use the following to build your virtual host config file:
+```
+    <VirtualHost *:80>
+        ServerAdmin webmaster@simple-address-book
+        ServerName simple-address-book
+        ServerAlias simple-address-book
+        DocumentRoot /path/to/your/project/folder/simple-address-book/web
+        ErrorLog /path/to/your/project/folder/simple-address-book/app/logs/error.log
+        CustomLog /path/to/your/project/folder/simple-address-book/app/logs/access.log combined
+    </VirtualHost>
+```
+Save and Quit.
+
+
+Open your hosts file.
+```
+    sudo vi /etc/hosts
+```
+
+Add following to your hosts file:
+```
+    127.0.0.1       simple-address-book
+```
+Save and Quit.
+
+Run the following linux commands to enable your new virtual host.
+```
+    sudo a2ensite simple-address-book
+    sudo a2enmod rewrite
+    sudo service apache2 restart
+```
+
+Visit the following URL in your browswer ```http://simple-address-book```.
